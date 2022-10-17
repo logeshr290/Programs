@@ -1,129 +1,58 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_diabetes #importing data
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn import linear_model
+from sklearn import metrics
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import KFold
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RepeatedKFold
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.preprocessing import PolynomialFeatures
+from scipy.stats import loguniform
+diab = load_diabetes()
+X = diab['data']
+y = diab['target']
+print(X.shape, y.shape)
+df = pd.DataFrame(X, columns=["age","sex","bmi","bp", "tc", "ldl", "hdl","tch", "ltg", "glu"])
+df['progression'] = diab['target']
+df.head()
+df.isnull().sum()
+plt.figure(figsize=(10, 7))
+dataplot = sns.heatmap(df.corr(), annot=True, fmt='.2f')
+plt.figure(figsize=(10, 7))
+sns.pairplot(df[['bmi', 'ltg', 'progression']])
+plt.figure(figsize=(10, 7))
+sns.regplot(data=df, x='bmi', y='progression',line_kws={"color": "red"})
+plt.title('BMI VS PROGRESSION PLOT')
+plt.xlabel('BMI')
+plt.ylabel('PROGRESSION')
+X = df.iloc[:,:-1]
+y = df['progression']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,random_state=42)
+reg = LinearRegression().fit(X_train, y_train)
+print(f'the intercept is:{reg.intercept_: .2f}')
+print(f'the slope is:{reg.coef_}')
+print(f'Coeff. of determination on train set:{reg.score(X_train, y_train): .2f}') #train set
+print(f'Coeff. of determination on test set:{reg.score(X_test, y_test): .2f}') #test set
+print(f'The mean absolute error is:{metrics.mean_absolute_error(y_test, y_test_pred): .2f}')
+print(f'The root mean squared error is:{np.sqrt(metrics.mean_squared_error(y_test, y_test_pred)): .2f}')
+plt.figure(figsize=(10, 7))
+plt.scatter(y_test, y_test_pred)
+plt.plot(y_test, y_test, color='r')
+plt.title('ACTUAL VS PREDICTED VALUES (TEST SET)')
+plt.xlabel('ACTUAL VALUES')
+plt.ylabel('PREDICTED VALUES')
+plt.show()
+plt.figure(figsize=(10, 7))
+ax = sns.kdeplot(y_test, color="r", label="Actual Value") #actual values
+sns.kdeplot(y_test_pred, color="b", label="Predicted Values", ax=ax) #predicted values
+plt.title('Actual vs Precited values')
+plt.legend()
+plt.show()
