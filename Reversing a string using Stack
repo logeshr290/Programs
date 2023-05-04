@@ -1,0 +1,27 @@
+#include <stdio.h>  
+#define si 100  
+int top,stack[si];
+void push(char x){  
+ if(top==si-1){  
+   printf("stack overflow");  
+ }
+ else{  
+  stack[++top]=x;  
+ }  
+} 
+void pop(){ 
+    printf("%c",stack[top--]);  
+}  
+void main()  
+{  
+ char a[si];
+ scanf("%s",a);
+ int len=strlen(a);  
+ int i;  
+ for(i=0;i<len;i++){  
+    push(a[i]); 
+ }
+ for(i=0;i<len;i++){
+    pop();  
+ }
+}
