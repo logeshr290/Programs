@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+void StringRev(char* in){
+ int size;
+ char *first,*last,temp;
+ first=in;
+ size=strlen(in);
+ last=in+size-1;
+ for(int i=0;i<size/2;i++){
+    temp=*last;
+    *last=*first;
+    *first=temp;
+ first++;
+ last--;
+ }
+}
+int main(){
+ char in[50];
+ scanf("%s",in);
+ StringRev(in);
+ printf("%s",in);
+ return 0;
+}
