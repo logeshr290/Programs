@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include <math.h>
+int main(int argc, char **argv)
+{
+    int n;
+    scanf("%d", &n);
+    for (int r = 1 - n; r < n; ++r) {
+        for (int c = 1 - n; c < n; ++c) {
+            printf("%d ", (int) fmax(abs(r), abs(c)) + 1);
+        }
+        putchar('\n');
+    }
+    return 0;
+}
