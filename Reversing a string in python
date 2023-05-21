@@ -1,0 +1,2 @@
+str = "lokee"[::-1]
+print(str)
