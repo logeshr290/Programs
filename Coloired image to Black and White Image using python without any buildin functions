@@ -1,0 +1,30 @@
+from PIL import Image
+import numpy as np
+def change(imgfile,imgfile2):
+    print(imgfile.shape)
+    pixels = imgfile2.getdata()
+    n=len(pixels)
+    arr2 = np.array(pixels)
+    n2=len(arr2)
+    outArr = np.zeros(n)
+    for i in range(n):
+            outArr[i] = int((imgfile[i][0] + imgfile[i][1] + imgfile[i][2]) / 3)
+    print(outArr.shape)
+    return outArr
+imgfile=Image.open('Your Image path')
+imageHeight , imageWidth = imgfile.size
+print(imageHeight)
+print(imageWidth)
+pixels = imgfile.getdata()
+len(pixels)
+arr = np.array(pixels)
+#print(arr)
+imgfile.show()
+bgimg = change(arr,imgfile)
+print(bgimg)
+bgim = np.reshape(bgimg, (imageWidth, imageHeight))
+print(bgimg.shape)
+bgimg1=Image.fromarray(bgim)
+bgimg1.show()
+
+
